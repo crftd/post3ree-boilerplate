@@ -1,14 +1,12 @@
 /**
  * Created by x22a on 25.02.16.
  */
-import { createHistory } from 'history';
 import { browserHistory } from 'react-router';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { syncHistory, routeReducer } from 'redux-simple-router';
 import DevTools from '../containers/devTools';
-import { persistState } from 'redux-devtools';
 
 import objectAssign from 'object-assign'
 
@@ -43,7 +41,7 @@ if (module.hot) {
             app: require('../reducers')
         }))
     );
-};
+}
 
 export default store;
 

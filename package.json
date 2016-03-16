@@ -9,14 +9,15 @@
     "lint": "eslint client server front test server.js dbSetup.js",
     "start": "NODE_ENV=development node server.babel.js",
     "start:prod": "NODE_ENV=production node server.babel.js",
-    "test": "./node_modules/karma/bin/karma start"
+    "test": "./node_modules/mocha/bin/mocha --compilers js:babel-core/register ./test/test_helper.js --recursive",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:hex22a/post3ree-boilerplate.git"
   },
   "keywords": [
-    "roland"
+    "pidor x"
   ],
   "author": "Stdio.Digital",
   "license": "MIT",
@@ -39,11 +40,14 @@
     "babel-runtime": "^6.5.0",
     "babel-template": "^6.5.0",
     "body-parser": "^1.15.0",
+    "chai": "^3.5.0",
+    "chai-immutable": "^1.5.3",
     "classnames": "^2.2.3",
     "config": "^1.19.0",
     "css-loader": "^0.23.1",
     "css-modules-require-hook": "^3.0.0",
     "eslint": "^2.4.0",
+    "eslint-loader": "^1.3.0",
     "eslint-plugin-react": "^4.2.2",
     "express": "^4.13.4",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -51,6 +55,7 @@
     "font-awesome": "^4.5.0",
     "http": "0.0.0",
     "image-webpack-loader": "^1.6.3",
+    "immutable": "^3.7.6",
     "jade": "^1.11.0",
     "jade-html-loader": "0.0.3",
     "mocha": "^2.4.5",

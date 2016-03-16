@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Router, Route } from 'react-router';
 
 import routes from '../universal/routes';
 import store from '../universal/store';

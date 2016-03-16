@@ -22,22 +22,31 @@ var plugins = [
     new ExtractTextPlugin('app.css', { allChunks: true })
 ];
 
+var modulePreLoaders = [
+    {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        exclude: /node_modules/,
+        include: __dirname
+    }
+];
+
 var moduleLoaders = [
     {
         test: /\.jsx?$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         exclude: /node_modules/,
         include: __dirname
     },
     {
         test: /\.p?css$/i,
-        loader: ExtractTextPlugin.extract('style', `css?modules&localIdentName=[name]_[local]__[hash:base64:5]!postcss`)
+        loader: ExtractTextPlugin.extract('style-loader', `css-loader?modules&localIdentName=[name]_[local]__[hash:base64:5]!postcss-loader`)
     },
     {
         test: /\.(jpe?g|png|gif)$/i,
         loaders: [
-            'file?name=images/[name].[ext]',
-            'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            'file-loader?name=images/[name].[ext]',
+            'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ]
     }
 ];
@@ -48,6 +57,7 @@ module.exports = {
     output: output,
     plugins: plugins,
     module: {
+        preLoaders: modulePreLoaders,
         loaders: moduleLoaders
     }
 };

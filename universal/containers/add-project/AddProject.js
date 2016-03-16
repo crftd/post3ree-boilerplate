@@ -2,7 +2,6 @@
  * Created by x22a on 25.02.16.
  */
 import React from 'react'
-import { connect } from 'react-redux'
 
 import ProjectCreateForm from '../../components/project-create-form/ProjectCreateForm'
 

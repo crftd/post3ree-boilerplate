@@ -48,7 +48,7 @@ class ProjectCreateForm extends React.Component {
     }
 }
 
-function mapStateToProps(store) {
+function mapStateToProps() {
     return {}
 }
 
