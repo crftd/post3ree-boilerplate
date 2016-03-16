@@ -1,7 +1,7 @@
 # post3ree-boilerplate
 Boilerplate for NodeJS universal application using 3REE stack + PostCSS
 
-# Requires RethinkDB
+## Requires RethinkDB
 
 All we need is (p)love. [Plove is here](https://www.rethinkdb.com/docs/install/ubuntu/)  
 
@@ -13,7 +13,7 @@ Now start RethinkDB bitch
 
 This will create a directory with db-files and start RethinkDB server. DB dashboard will be available at [localhost:8080](http://localhost:8080)
 
-# App
+## App
 
 `$ npm i`  
 

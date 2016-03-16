@@ -2,10 +2,10 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { Router, Route } from 'react-router';
 
-import routes from '../front/routes';
-import store from '../front/store';
+import routes from '../universal/routes';
+import store from '../universal/store';
 
-import Root from '../front/containers/root';
+import Root from '../universal/containers/root';
 
 ReactDOM.render(
   <Root store={store} routing={routes} />,

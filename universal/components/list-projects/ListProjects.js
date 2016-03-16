@@ -4,7 +4,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { listProjects } from '../../actions/RolandActions'
+import { listProjects } from '../../actions/ListProjectActions'
 
 class ListProjects extends React.Component {
     componentDidMount() {

@@ -3,9 +3,9 @@ import ReactDOMServer from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { RouterContext, match } from 'react-router';
 
-import configureStore from '../front/store';
-import DevTools from '../front/containers/devTools';
-import routes from '../front/routes';
+import configureStore from '../universal/store';
+import DevTools from '../universal/containers/devTools';
+import routes from '../universal/routes';
 
 const isDev = (process.env.NODE_ENV !== 'production');
 

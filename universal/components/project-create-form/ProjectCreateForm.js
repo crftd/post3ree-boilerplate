@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import styles from './project_create_form.pcss'
 
-import { addProject } from '../../actions/RolandActions'
+import { addProject } from '../../actions/AddProjectActions'
 
 class ProjectCreateForm extends React.Component {
     constructor(props, context) {
@@ -35,13 +35,13 @@ class ProjectCreateForm extends React.Component {
         return  <div>
                     <div>
                         <form>
-                            <label>Название проекта
+                            <label>Name
                                 <input className={styles.common_input} type="text" onChange={::this.handleProjectNameChange}/>
                             </label>
-                            <label>Адрес
+                            <label>URL
                                 <input className={styles.common_input} type="text" onChange={::this.handleUrlChange}/>
                             </label>
-                            <button type="submit" onClick={::this.handleSubmit}> пошел в мгаз закупился</button>
+                            <button type="submit" onClick={::this.handleSubmit}>Submit</button>
                         </form>
                     </div>
                 </div>;
