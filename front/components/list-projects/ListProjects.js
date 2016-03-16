@@ -1,0 +1,26 @@
+/**
+ * Created by nemaeska on 02.03.16.
+ */
+import React from 'react'
+import { connect } from 'react-redux'
+
+import { listProjects } from '../../actions/RolandActions'
+
+class ListProjects extends React.Component {
+    componentDidMount() {
+        this.props.dispatch(listProjects());
+        console.log(this.props);
+    }
+
+    render () {
+        return  <div>{this.props.projects.map(function(project, i){
+            return (<div key={i}>
+                <div>{project.created}</div>
+                <div>{project.url}</div>
+                <div>{project.projectName}</div>
+            </div>)
+        })}</div>;
+    }
+}
+
+export default connect(store => ({projects: store.listProjects}))(ListProjects)
