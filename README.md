@@ -3,10 +3,10 @@ Boilerplate for NodeJS universal application using 3REE stack + PostCSS
 
 # Requires RethinkDB
 
-All we need is (p)love
-[Plove is here](https://www.rethinkdb.com/docs/install/ubuntu/)
+All we need is (p)love. [Plove is here](https://www.rethinkdb.com/docs/install/ubuntu/)  
 
-Now start RethinkDB bitch
+Now start RethinkDB bitch  
+
 ![Pinkman](https://pbs.twimg.com/profile_images/3628798662/6b689ec272f472cd0241a04183390b62.jpeg)
 
 `$ rethinkdb`
@@ -15,5 +15,6 @@ This will create a directory with db-files and start RethinkDB server. DB dashbo
 
 # App
 
-`$ npm i`
+`$ npm i`  
+
 `$ npm run start`
