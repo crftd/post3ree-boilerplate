@@ -23,7 +23,7 @@
   "license": "MIT",
   "homepage": "https://github.com/hex22a/post3ree-boilerplate#post3ree-boilerplate",
   "devDependencies": {
-    "autoprefixer": "^6.3.3",
+    "autoprefixer": "^6.3.6",
     "babel": "^6.5.2",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
