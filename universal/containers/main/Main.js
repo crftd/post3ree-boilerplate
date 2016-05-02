@@ -3,14 +3,20 @@
  */
 import React from 'react'
 
-import styles from './main.pcss'
+import styles from './../common/main.pcss'
+
+import { Link } from 'react-router'
+import Menu from '../../components/menu/Menu'
 
 export default class Main extends React.Component {
     render () {
         return  <div>
-                    <p>Hello, darling. Ama main.</p>
-                    <a className={styles.label} href="dashboard">Dashboard</a>
-                    <a className={styles.label} href="add-project">Add project</a>
+                    <Menu />
+                    <div className={styles.main}>
+                        <p>Hello, darling. Ama main.</p>
+                        <Link className={styles.label} to="dashboard">Dashboard</Link>
+                        <Link className={styles.label} to="add-project">Add project</Link>
+                    </div>
                 </div>;
     }
 }

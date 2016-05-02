@@ -3,12 +3,16 @@
  */
 import React from 'react'
 
+import styles from './../common/main.pcss'
+
 import ListProjects from '../../components/list-projects/ListProjects'
+import Menu from '../../components/menu/Menu'
 
 export default class Dashboard extends React.Component {
     render () {
         return  <div>
-            <ListProjects/>
-        </div>;
+                    <Menu />
+                    <ListProjects className={styles.main} />
+                </div>;
     }
 }

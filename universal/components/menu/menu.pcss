@@ -1,0 +1,158 @@
+/* Created by Space Invader on 30.03.2016. */
+
+.header {
+  position: fixed;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: #fff;
+  z-index: 1031;
+  overflow: hidden;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  transition: height 0.2s ease-in-out;
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.1s linear 0s, visibility 0s linear 0.1s;
+  }
+
+  & > .main {
+    height: 100%;
+    display: block;
+
+    & > .menu {
+      height: 100%;
+
+      & > .list {
+        list-style: none;
+        padding: 0;
+        background-color: #fff;
+        height: 100%;
+
+        & > li {
+          height: 77px;
+          width: 100%;
+          padding: 0;
+          text-align: center;
+          font-family: 'Semibold', arial, verdana, sans-serif;
+          font-style: normal;
+          font-weight: normal;
+
+          & > a {
+            display: block;
+            text-decoration: none;
+            color: #808588;
+            transition: .2s ease color;
+            & > .default {
+              display: block;
+              padding: 0 0 10px 0;
+              border-bottom: 1px solid #edf4f6;
+              & > i {
+                display: block;
+                height: 35px;
+                padding: 10px 0;
+                position: relative;
+                & > svg {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  display: block;
+                  width: 100%;
+                  font-size: 5em;
+                  line-height: 0.75em;
+                  margin: 15px auto;
+                  & > path {
+                    transition: .2s ease fill;
+                  }
+                }
+                &.newsSVG > svg {
+                  width: 28px;
+                  height: 28px;
+                  margin-top: -14px;
+                  margin-left: -14px;
+                }
+                &.privateAreaSVG > svg {
+                  width: 26.4px;
+                  height: 24.8px;
+                  margin-top: -12.4px;
+                  margin-left: -13.2px;
+                }
+              }
+
+              & > span {
+                display: block;
+                font-size: 11px;
+                text-align: center;
+                font-family: 'Lato';
+                text-transform: uppercase;
+                font-weight: 400;
+              }
+            }
+
+            &:hover {
+              color: #f17030;
+              & > .default {
+                & > i {
+                  & > svg path {
+                    fill: #f17030;
+                  }
+                }
+              }
+            }
+
+            &.active {
+              color: #f17030;
+              & > .default {
+                & > i {
+                  & > svg path {
+                    fill: #f17030;
+                  }
+                }
+              }
+            }
+          }
+
+          &:last-child {
+            & > a {
+              & > .default {
+                border: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media (min-width: 768px) {
+  .header {
+    overflow: visible;
+    width: 95px;
+    height: 100%;
+    box-shadow: none;
+    & > .main {
+      position: relative;
+      z-index: 10;
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15);
+
+      & > .menu {
+        & > .list {
+          & > li {
+            &.logo {
+
+            }
+          }
+        }
+      }
+    }
+  }
+}

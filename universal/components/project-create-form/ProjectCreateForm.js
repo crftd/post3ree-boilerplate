@@ -32,7 +32,7 @@ class ProjectCreateForm extends React.Component {
     }
 
     render () {
-        return  <div>
+        return  <div className={this.props.className}>
                     <div>
                         <form>
                             <label>Name

@@ -57,6 +57,10 @@ var moduleLoaders = [
             'file-loader?name=images/[name].[ext]',
             'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ]
+    },
+    {
+        test: /\.svg$/,
+        loader: 'svg-inline'
     }
 ];
 

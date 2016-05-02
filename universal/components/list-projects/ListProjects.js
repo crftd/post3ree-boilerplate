@@ -12,7 +12,7 @@ class ListProjects extends React.Component {
     }
 
     render () {
-        return  <div>{this.props.projects.map(function(project, i){
+        return  <div className={this.props.className}>{this.props.projects.map(function(project, i){
             return (<div key={i}>
                 <div>{project.created}</div>
                 <div>{project.url}</div>
