@@ -9,7 +9,6 @@ import { listProjects } from '../../actions/ListProjectActions'
 class ListProjects extends React.Component {
     componentDidMount() {
         this.props.dispatch(listProjects());
-        console.log(this.props);
     }
 
     render () {
