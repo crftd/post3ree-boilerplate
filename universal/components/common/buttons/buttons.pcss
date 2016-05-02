@@ -1,0 +1,77 @@
+/* Created by Space Invader on 06.04.2016. */
+
+.button {
+  color: #fefefe;
+  font-family: 'Lato';
+  font-size: 16px;
+  padding: 12px 24px;
+  background-color: #f17030;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: .2s ease all;
+
+  &.large {
+    font-size: 18px;
+    padding: 15px 30px;
+  }
+
+  &.small {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+
+  &.grey {
+    background-color: #adbfc3;
+
+    &:hover {
+      background-color: #99adb2;
+    }
+  }
+
+  &:hover {
+    background-color: #e86829;
+  }
+
+  &:disabled {
+    background-color: rgba(241, 112, 48, 0.7);
+  }
+}
+
+.exitButtonComponent {
+  display: block;
+  background-color: transparent;
+  border: none;
+  position: relative;
+  padding: 10px 40px 10px 10px;
+  outline: none;
+  cursor: pointer;
+  color: #000;
+
+  & > .text {
+    display: inline-block;
+    font-family: "VW Head";
+    color: #000;
+    font-weight: 800;
+    font-size: 15px;
+  }
+
+  & > .icon {
+    display: inline-block;
+    margin: 0 0 0 15px;
+    width: 36px;
+    height: 36px;
+    background-color: #E3EBEC;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+
+    & > svg {
+      position: relative;
+      top: 10px;
+      left: 11px;
+    }
+  }
+}

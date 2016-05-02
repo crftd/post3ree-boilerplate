@@ -48,8 +48,12 @@ var moduleLoaders = [
         include: __dirname
     },
     {
-        test: /\.p?css$/i,
+        test: /\.pcss$/i,
         loader: ExtractTextPlugin.extract('style-loader', `css-loader?modules&localIdentName=[name]_[local]__[hash:base64:5]!postcss-loader`)
+    },
+    {
+        test: /\.css$/i,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
     },
     {
         test: /\.(jpe?g|png|gif)$/i,

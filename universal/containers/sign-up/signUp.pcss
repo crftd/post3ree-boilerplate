@@ -1,0 +1,64 @@
+/**
+ * Created by invader on 13.04.16.
+ */
+
+.main {
+  padding: 0 0 0 95px;
+  background-color: #f1f5f6;
+  position: relative;
+  width: calc(100% - 95px);
+  height: 100%;
+
+  & > .signup {
+    width: 370px;
+    height: 380px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -190px;
+    margin-left: -185px;
+
+    & > .title {
+      font-family: "VW Head";
+      font-weight: 800;
+      font-size: 32px;
+      color: #333;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    & > .form {
+      margin: 20px 0 0 0;
+
+      & .links {
+        display: block;
+        clear: fix;
+
+        & > a {
+          font-family: "VW Head";
+          font-weight: 400;
+          font-size: 14px;
+          color: #f17030;
+          text-decoration: none;
+
+          &:first-child {
+            float: left;
+          }
+
+          &:last-child {
+            float: right;
+          }
+        }
+      }
+
+      & .button {
+        text-align: center;
+        margin: 20px 0 0 0 ;
+
+        & > button {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
