@@ -101,3 +101,54 @@ export function updateUser(user) {
                 .get(user.id).update(user).run(conn);
         });
 }
+
+//tokens
+export function saveToken(token, userId, callback) {
+    return connect()
+        .then(conn => {
+            token.created = new Date();
+            token.userId = userId;
+            return r
+                .table('rm_tokens')
+                .insert(token).run(conn)
+                .then((result, err) => {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback();
+                    }
+                });
+        });
+}
+
+export function consumeToken(token, callback) {
+    return connect()
+        .then(conn => {
+            return r
+                .table('rm_tokens')
+                .filter({token}).limit(1).run(conn)
+                .then((cursor, err) => {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        cursor.next(function (err, row) {
+                            if (err) {
+                                callback(null, null);
+                            } else {
+                                callback(null, row.userId);
+                                deleteToken(token);
+                            }
+                        });
+                    }
+                });
+        });
+}
+
+export function deleteToken(token) {
+    return connect()
+        .then(conn => {
+            return r
+                .table('rm_tokens')
+                .filter({token}).limit(1).delete().run(conn);
+        });
+}

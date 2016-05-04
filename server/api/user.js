@@ -7,6 +7,9 @@ import * as db from './service/db'
 
 import bcrypt from 'bcrypt'
 
+var Chance = require('chance');
+var chance = new Chance();
+
 function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
@@ -24,7 +27,13 @@ export function logIn(req, res, next) {
                         res.status(400);
                         res.json({error: err});
                     } else {
-                        res.json({user});
+                        var token = chance.string({length: 64});
+                        db.saveToken({token}, req.user.id, function(err) {
+                            if (err) { return done(err); }
+                            res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); // 7 days
+                            res.json({user});
+                            return next();
+                        });
                     }
                     return err;
                 })
@@ -80,6 +89,7 @@ export function register(req, res, next) {
 }
 
 export function logOut(req, res) {
+    res.clearCookie('remember_me');
     req.logout();
     res.redirect('/');
 }

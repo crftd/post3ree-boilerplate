@@ -3,7 +3,7 @@ import config from 'config';
 
 const rethinkdb = config.get('rethinkdb');
 let DATABASE = rethinkdb.db || 'boilerplate';
-let TABLES = ['projects', 'users'];
+let TABLES = ['projects', 'users', 'rm_tokens'];
 
 r.connect(rethinkdb)
 .then(conn => {

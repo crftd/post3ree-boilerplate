@@ -11,36 +11,42 @@ const isDev = (process.env.NODE_ENV !== 'production');
 
 export function handleRender(req, res) {
     console.log(' [x] Request for', req.url);
-        let initialState = {};
+    let initialState = {};
 
-        const store = configureStore(req, initialState);
+    const store = configureStore(req, initialState);
 
-        // Wire up routing based upon routes
-        match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
-            if (error)  {
-                console.log('Error', error);
-                res.status(400);
-                res.send(error);
-                return;
-            }
+    // Wire up routing based upon routes
+    match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+        if (req.user != null) {
+            console.log('[AUTH]', req.user);
+        } else {
+            console.log('[AUTH] unauthorized request');
+        }
 
-            if (redirectLocation) {
-                res.redirect(redirectLocation);
-                return;
-            }
+        if (error)  {
+            console.log('Error', error);
+            res.status(400);
+            res.send(error);
+            return;
+        }
 
-            const devTools = (isDev) ? <DevTools /> : null;
+        if (redirectLocation) {
+            res.redirect(redirectLocation);
+            return;
+        }
 
-            // Render the component to a string
-            const html = ReactDOMServer.renderToString(
-                <Provider store={store}>
-                <div>
-                <RouterContext {...renderProps} />
-            {devTools}
-            </div>
-            </Provider>
-            );
+        const devTools = (isDev) ? <DevTools /> : null;
 
-            res.render('index', { isProd: (!isDev), html: html, initialState: store.getState() });
-        });
+        // Render the component to a string
+        const html = ReactDOMServer.renderToString(
+            <Provider store={store}>
+            <div>
+            <RouterContext {...renderProps} />
+        {devTools}
+        </div>
+        </Provider>
+        );
+
+        res.render('index', { isProd: (!isDev), html: html, initialState: store.getState() });
+    });
 }
