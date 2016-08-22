@@ -1,16 +1,15 @@
 /**
  * Created by x22a on 25.02.16.
  */
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router';
 
-import styles from './../common/main.pcss'
-
-import { Link } from 'react-router'
-import Menu from '../../components/menu/Menu'
+import styles from './../common/main.pcss';
+import Menu from '../../components/menu/Menu';
 
 export default class Main extends React.Component {
-    render () {
-        return  <div>
+    render() {
+        return <div>
                     <Menu />
                     <div className={styles.main}>
                         <p>Hello, darling. Ama main.</p>
