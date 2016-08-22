@@ -1,5 +1,5 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "airbnb" ,
   "parser": "babel-eslint",
   "env": {
     "browser": "true",
@@ -9,6 +9,7 @@
     "react"
   ],
   "rules": {
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-debugger": 0,
     "no-console": 0,
     "new-cap": 0,
@@ -16,6 +17,7 @@
     "no-underscore-dangle": 0,
     "no-use-before-define": 0,
     "eol-last": 0,
+    "indent": [2, 4],
     "quotes": [2, "single"],
     "jsx-quotes": [0, "prefer-single"],
     "react/jsx-no-undef": 1,
