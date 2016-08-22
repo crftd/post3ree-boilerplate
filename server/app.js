@@ -11,7 +11,7 @@ const isDev = (process.env.NODE_ENV !== 'production');
 
 export function handleRender(req, res) {
     console.log(' [x] Request for', req.url);
-    let initialState = {};
+    const initialState = {};
 
     const store = configureStore(req, initialState);
 
@@ -23,7 +23,7 @@ export function handleRender(req, res) {
             console.log('[AUTH] unauthorized request');
         }
 
-        if (error)  {
+        if (error) {
             console.log('Error', error);
             res.status(400);
             res.send(error);
@@ -47,6 +47,6 @@ export function handleRender(req, res) {
         </Provider>
         );
 
-        res.render('index', { isProd: (!isDev), html: html, initialState: store.getState() });
+        res.render('index', { isProd: (!isDev), html, initialState: store.getState() });
     });
 }

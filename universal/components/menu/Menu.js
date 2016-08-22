@@ -2,30 +2,29 @@
  * Created by Space Invader on 30.03.2016.
  */
 
-import React from 'react'
-import s from './menu.pcss'
-import { Link } from 'react-router'
-import { connect } from 'react-redux'
+import React from 'react';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import classNames from 'classnames/bind';
+import SVG from 'svg-inline-react';
 
-import SVG from 'svg-inline-react'
-import newsIcon from './images/menu-news.svg'
-import privateAreaIcon from './images/menu-privateArea.svg'
-
-import classNames from 'classnames/bind'
+import s from './menu.pcss';
+import newsIcon from './images/menu-news.svg';
+import privateAreaIcon from './images/menu-privateArea.svg';
 
 class Menu extends React.Component {
-    render () {
-        let props = this.props;
+    render() {
+        const props = this.props;
 
-        let st = classNames.bind(s);
+        const st = classNames.bind(s);
 
-        let navItem = function(number) {
+        const navItem = (number) => {
             return st({
-                active: props.menuItem == number
+                active: props.menuItem === number,
             });
         };
 
-        return  <header className={ s.header }>
+        return <header className={ s.header }>
                     <div className={ s.overlay }></div>
                     <nav className={ s.main }>
                         <div className={ s.menu }>
@@ -41,7 +40,10 @@ class Menu extends React.Component {
                                 <li>
                                     <Link className={navItem(1)} to="/sign-in">
                                         <span className={ s.default }>
-                                            <SVG src={ privateAreaIcon } className={ s.privateAreaSVG } />
+                                            <SVG
+                                                src={ privateAreaIcon }
+                                                className={ s.privateAreaSVG }
+                                            />
                                             <span>Private</span>
                                         </span>
                                     </Link>
@@ -53,4 +55,4 @@ class Menu extends React.Component {
     }
 }
 
-export default connect(store => ({menuItem: store.menuItem}))(Menu)
+export default connect(store => ({ menuItem: store.menuItem }))(Menu);

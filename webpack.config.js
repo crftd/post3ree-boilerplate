@@ -7,8 +7,8 @@ var isDev = (process.env.NODE_ENV === 'development');
 var appEntry = './client/app';
 
 var autoprefixer = require('autoprefixer');
-var precss       = require('precss');
-var pcss_normalize    = require('postcss-normalize');
+var precss = require('precss');
+var pcss_normalize = require('postcss-normalize');
 var pcss_clearfix = require('postcss-clearfix');
 var pcss_vars = require('postcss-simple-vars');
 //var pcss_fonts = require('postcss-font-magician')(require('./fonts/fonts'));

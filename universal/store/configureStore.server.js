@@ -12,7 +12,7 @@ import DevTools from '../containers/devTools';
 export default (req, initialState) => {
     console.log('Server router!');
     const rootReducer = combineReducers(Object.assign({}, reducers, {
-        routing: routeReducer
+        routing: routeReducer,
     }));
 
     const reduxRouterMiddleware = syncHistory(createHistory());

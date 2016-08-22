@@ -3,7 +3,12 @@
  */
 import request from 'superagent';
 
-import { projectsUrl, LIST_PROJECT_FAIL, LIST_PROJECT_REQUEST, LIST_PROJECT_SUCCESS } from './constants'
+import {
+    projectsUrl,
+    LIST_PROJECT_FAIL,
+    LIST_PROJECT_REQUEST,
+    LIST_PROJECT_SUCCESS,
+} from './constants';
 
 export function listProjects() {
     return dispatch => {
@@ -23,19 +28,19 @@ export function listProjects() {
 }
 
 export function listProjectsRequest() {
-    return { type: LIST_PROJECT_REQUEST }
+    return { type: LIST_PROJECT_REQUEST };
 }
 
 export function listProjectsFailure(error) {
     return {
         type: LIST_PROJECT_FAIL,
-        error
-    }
+        error,
+    };
 }
 
 export function listProjectsSuccess(listProjects) {
     return {
         type: LIST_PROJECT_SUCCESS,
-        listProjects
-    }
+        listProjects,
+    };
 }

@@ -2,13 +2,14 @@
  * Created by x22a on 25.02.16.
  */
 require('babel-core/register');
-require.extensions['.gif'] = function() {};
-require.extensions['.svg'] = function() {};
-require.extensions['.png'] = function() {};
-require.extensions['.jpg'] = function() {};
-require.extensions['.jpeg'] = function() {};
-require.extensions['.ico'] = function() {};
-require.extensions['.css'] = function() {};
+
+require.extensions['.gif'] = () => {};
+require.extensions['.svg'] = () => {};
+require.extensions['.png'] = () => {};
+require.extensions['.jpg'] = () => {};
+require.extensions['.jpeg'] = () => {};
+require.extensions['.ico'] = () => {};
+require.extensions['.css'] = () => {};
 require('babel-polyfill');
 require('css-modules-require-hook/preset');
 require('./server.js');
