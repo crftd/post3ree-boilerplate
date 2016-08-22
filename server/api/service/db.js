@@ -18,7 +18,7 @@ export function addProject(project) {
                 .table('projects')
                 .insert(project).run(conn)
                 .then(response => {
-                    return Object.assign({}, project, {id: response.generated_keys[0]});
+                    return Object.assign({}, project, { id: response.generated_keys[0] });
                 });
         });
 }
@@ -39,12 +39,12 @@ export function findUserByEmail(mail, callback) {
         .then(conn => {
             return r
                 .table('users')
-                .filter({username: mail}).limit(1).run(conn)
+                .filter({ username: mail }).limit(1).run(conn)
                 .then((cursor, err) => {
                     if (err) {
                         callback(err);
                     } else {
-                        cursor.next(function (err, row) {
+                        cursor.next((err, row) => {
                             if (err) {
                                 callback(null, null);
                             } else {
@@ -89,7 +89,7 @@ export function saveUser(user, callback) {
                             callback(null, false);
                         }
                     }
-                })
+                });
         });
 }
 
@@ -126,12 +126,12 @@ export function consumeToken(token, callback) {
         .then(conn => {
             return r
                 .table('rm_tokens')
-                .filter({token}).limit(1).run(conn)
+                .filter({ token }).limit(1).run(conn)
                 .then((cursor, err) => {
                     if (err) {
                         callback(err);
                     } else {
-                        cursor.next(function (err, row) {
+                        cursor.next((err, row) => {
                             if (err) {
                                 callback(null, null);
                             } else {
@@ -149,6 +149,7 @@ export function deleteToken(token) {
         .then(conn => {
             return r
                 .table('rm_tokens')
-                .filter({token}).limit(1).delete().run(conn);
+                .filter({ token }).limit(1).delete()
+                .run(conn);
         });
 }

@@ -2,13 +2,18 @@
   "extends": "airbnb" ,
   "parser": "babel-eslint",
   "env": {
-    "browser": "true",
-    "node": "true"
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "arrowFunctions": true
   },
   "plugins": [
     "react"
   ],
   "rules": {
+    "arrow-body-style": [2, "as-needed"],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-debugger": 0,
     "no-console": 0,
