@@ -61,12 +61,9 @@ class SingIn extends React.Component {
     render() {
         return <div>
                     <Menu/>
-
                     <div className={ s.main }>
-
                         <div className={ s.signin }>
                             <h2 className={ s.title }>Sign In</h2>
-
                             <div className={ s.form }>
                                 <form>
                                     <Input
@@ -100,7 +97,6 @@ class SingIn extends React.Component {
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>;
     }
