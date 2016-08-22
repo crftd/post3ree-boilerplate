@@ -1,6 +1,11 @@
 import request from 'superagent';
 
-import { ADD_PROJECT_FAIL, ADD_PROJECT_REQUEST, ADD_PROJECT_SUCCESS, projectsUrl } from './constants'
+import {
+    ADD_PROJECT_FAIL,
+    ADD_PROJECT_REQUEST,
+    ADD_PROJECT_SUCCESS,
+    projectsUrl,
+} from './constants';
 
 export function addProject(project) {
     console.log('Add project', project);
@@ -24,20 +29,21 @@ export function addProject(project) {
 export function addProjectRequest(project) {
     return {
         type: ADD_PROJECT_REQUEST,
-        project
+        project,
     };
 }
 
 export function addProjectFailure(error, project) {
     return {
         type: ADD_PROJECT_FAIL,
-        project, error
-    }
+        project,
+        error,
+    };
 }
 
 export function addProjectSuccess(project) {
     return {
         type: ADD_PROJECT_SUCCESS,
-        project
-    }
+        project,
+    };
 }
