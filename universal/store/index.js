@@ -3,7 +3,7 @@
  */
 /* global __DEV__ */
 
-if(typeof window === 'undefined') {
+if (typeof window === 'undefined') {
     module.exports = require('./configureStore.server');
 } else {
     if (__DEV__) {
