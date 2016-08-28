@@ -3,7 +3,7 @@
  */
 import request from 'superagent';
 
-import { routeActions } from 'redux-simple-router';
+import { routerActions } from 'react-router-redux';
 
 import { registerUrl, loginUrl,
     REGISTER_USER, REGISTER_USER_FAIL, REGISTER_USER_SUCCESS,
@@ -56,19 +56,19 @@ export function loginUser(user) {
                     console.log(res.body.user.role);
                     switch (res.body.user.role) {
                     case 'sales':
-                        dispatch(routeActions.push('/dashboard-manager'));
+                        dispatch(routerActions.push('/dashboard-manager'));
                         break;
                     case 'rop':
-                        dispatch(routeActions.push('/dashboard-rop'));
+                        dispatch(routerActions.push('/dashboard-rop'));
                         break;
                     case 'superuser':
-                        dispatch(routeActions.push('/superuser'));
+                        dispatch(routerActions.push('/superuser'));
                         break;
                     case 'project-manager':
-                        dispatch(routeActions.push('/dashboard-project-manager'));
+                        dispatch(routerActions.push('/dashboard-project-manager'));
                         break;
                     case 'customer':
-                        dispatch(routeActions.push('/dashboard'));
+                        dispatch(routerActions.push('/dashboard'));
                         break;
                     }
                     dispatch(loginUserSuccess(res.body));

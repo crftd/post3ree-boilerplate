@@ -1,11 +1,6 @@
-/**
- * Created by x22a on 25.02.16.
- */
-// import { createHistory } from 'history';
-import { browserHistory } from 'react-router';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import { syncHistory, routeReducer } from 'redux-simple-router';
+import { routerReducer } from 'react-router-redux';
 import objectAssign from 'object-assign';
 
 import reducers from '../reducers';
@@ -14,12 +9,11 @@ import reducers from '../reducers';
 const initialState = window.__INITIAL_STATE__;
 
 const rootReducer = combineReducers(objectAssign({}, reducers, {
-    routing: routeReducer,
+    routing: routerReducer,
 }));
 
-const reduxRouterMiddleware = syncHistory(browserHistory);
 const enhancer = compose(
-    applyMiddleware(thunkMiddleware, reduxRouterMiddleware)
+    applyMiddleware(thunkMiddleware)
 );
 
 const store = createStore(rootReducer, initialState, enhancer);
