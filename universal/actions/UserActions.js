@@ -3,7 +3,7 @@
  */
 import request from 'superagent';
 
-import { routerActions } from 'react-router-redux';
+import { browserHistory } from 'react-router'
 
 import { registerUrl, loginUrl,
     REGISTER_USER, REGISTER_USER_FAIL, REGISTER_USER_SUCCESS,
@@ -55,21 +55,12 @@ export function loginUser(user) {
                 } else {
                     console.log(res.body.user.role);
                     switch (res.body.user.role) {
-                    case 'sales':
-                        dispatch(routerActions.push('/dashboard-manager'));
-                        break;
-                    case 'rop':
-                        dispatch(routerActions.push('/dashboard-rop'));
-                        break;
-                    case 'superuser':
-                        dispatch(routerActions.push('/superuser'));
-                        break;
-                    case 'project-manager':
-                        dispatch(routerActions.push('/dashboard-project-manager'));
-                        break;
-                    case 'customer':
-                        dispatch(routerActions.push('/dashboard'));
-                        break;
+                        case 'sales':
+                            browserHistory.push('/url');
+                            break;
+                        default:
+                            browserHistory.push('/');
+                            break;
                     }
                     dispatch(loginUserSuccess(res.body));
                 }
