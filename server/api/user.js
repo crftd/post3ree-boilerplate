@@ -1,8 +1,8 @@
-/**
- * Created by hex22a on 31.03.16.
- */
 import passport from 'passport';
 import bcrypt from 'bcrypt';
+
+import jwt from 'jsonwebtoken';
+import config from 'config';
 
 import * as db from './service/db';
 
@@ -15,7 +15,7 @@ function validateEmail(email) {
 }
 
 export function logIn(req, res, next) {
-    passport.authenticate('json', (err, user, info) => { //
+    passport.authenticate('json-login', (err, token, user) => { //
         if (err) {
             res.status(400);
             res.json({ error: err });
@@ -26,13 +26,8 @@ export function logIn(req, res, next) {
                         res.status(400);
                         res.json({ error: err });
                     } else {
-                        const token = chance.string({ length: 64 });
-                        db.saveToken({ token }, req.user.id, (err) => {
-                            if (err) { return done(err); }
-                            res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); // 7 days
-                            res.json({ user });
-                            return next();
-                        });
+                        res.json({ token });
+                        return next();
                     }
                     return err;
                 });
@@ -45,7 +40,11 @@ export function logIn(req, res, next) {
     })(req, res, next);
 }
 
-export function register(req, res, next) {
+export function register(req, res) {
+    if (req.body.user == null) {
+        res.status(400);
+        res.json({ error: 'Bad request' });
+    }
     if (!validateEmail(req.body.user.username)) {
         // Probably not a good email address.
         res.status(400);
@@ -72,13 +71,12 @@ export function register(req, res, next) {
 
                 // Saving the new user to DB
                 db.saveUser(user,
-                    (err, saved) => {
-                        console.log(`[DEBUG][saveUser] ${saved}`);
+                    (err, saved, id) => {
                         if ((err) || (!saved)) {
                             res.status(400);
-                            res.json({ error: 'Some error' });
+                            res.json({ err });
                         } else {
-                            res.json({ user });
+                            res.json({ id });
                         }
                     }
                 );
@@ -86,8 +84,40 @@ export function register(req, res, next) {
         });
 }
 
+export function getUser(req, res) {
+    if (req.query.uuid == null && req.query.email == null && req.headers.authorization == null) {
+        res.status(400);
+        res.json({ error: 'Bad request' });
+    }
+
+    let sendResponse = (err, user) => {
+        if (err) {
+            res.status(400);
+            res.json({ err });
+        } else {
+            delete user.password;
+            res.json({ user });
+        }
+    };
+
+    if (req.query.uuid) {
+        db.findUserById(req.query.uuid, sendResponse)
+    } else if (req.query.email) {
+        db.findUserByEmail(req.query.email, sendResponse)
+    } else if (req.headers.authorization) {
+        let token = req.headers.authorization;
+        jwt.verify(token, config.jwtSecret, function(err, decoded) {
+            if (err) {
+                res.status(401);
+                res.json(null);
+            } else {
+                db.findUserById(decoded.sub, sendResponse);
+            }
+        });
+    }
+}
+
 export function logOut(req, res) {
-    res.clearCookie('remember_me');
     req.logout();
-    res.redirect('/');
+    res.json({ logout: true });
 }
