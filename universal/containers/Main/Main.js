@@ -33,7 +33,8 @@ class Main extends Component {
             <Container>
                 <Menu/>
                 <div>
-                    Hello, anonymous!
+                    Hello{!this.props.isAuthenticated && ', anonymous'}!
+
                 </div>
             </Container>
         )
