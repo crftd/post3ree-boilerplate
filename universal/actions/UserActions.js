@@ -1,17 +1,15 @@
-/**
- * Created by hex22a on 01.04.16.
- */
-import request from 'superagent';
-
+import request from 'superagent'
 import { browserHistory } from 'react-router'
+import Auth from '../modules/Auth'
 
 import { registerUrl, loginUrl,
-    REGISTER_USER, REGISTER_USER_FAIL, REGISTER_USER_SUCCESS,
-    LOGIN_USER, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL } from './constants';
+    REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE,
+    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,
+    LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE } from './constants'
 
-export function registerUser(user) {
+export function register(user) {
     return dispatch => {
-        dispatch(registerUserRequest(user));
+        dispatch(registerRequest());
 
         return request
             .post(registerUrl)
@@ -19,30 +17,32 @@ export function registerUser(user) {
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (err) {
-                    console.log(err);
-                    dispatch(registerUserFail(user, res.body));
+                    dispatch(registerFailure());
                 } else {
-                    dispatch(registerUserSuccess(res.body));
+                    dispatch(registerSuccess());
+                    browserHistory.push('/sign-in');
                 }
-            });
-    };
+            })
+    }
 }
 
-function registerUserRequest(user) {
-    return { type: REGISTER_USER, user };
+function registerRequest() {
+    return { type: REGISTER_REQUEST }
 }
 
-function registerUserSuccess(user) {
-    return { type: REGISTER_USER_SUCCESS, user };
+function registerSuccess() {
+    return { type: REGISTER_SUCCESS }
 }
 
-function registerUserFail(user, error) {
-    return { type: REGISTER_USER_FAIL, user, error };
+function registerFailure() {
+    return { type: REGISTER_FAILURE }
 }
 
-export function loginUser(user) {
+
+
+export function login(user) {
     return dispatch => {
-        dispatch(loginUserRequest(user));
+        dispatch(loginRequest());
 
         return request
             .post(loginUrl)
@@ -50,32 +50,47 @@ export function loginUser(user) {
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (err) {
-                    console.log(err);
-                    dispatch(loginUserFail(res.body));
+                    dispatch(loginFailure());
                 } else {
-                    console.log(res.body.user.role);
-                    switch (res.body.user.role) {
-                        case 'sales':
-                            browserHistory.push('/url');
-                            break;
-                        default:
-                            browserHistory.push('/');
-                            break;
-                    }
-                    dispatch(loginUserSuccess(res.body));
+                    Auth.authenticateUser(res.body.token);
+                    dispatch(loginSuccess(Auth.getUserRole()));
+                    browserHistory.push('/');
                 }
-            });
-    };
+            })
+    }
 }
 
-function loginUserRequest(user) {
-    return { type: LOGIN_USER, user };
+function loginRequest() {
+    return { type: LOGIN_REQUEST }
 }
 
-function loginUserSuccess(user) {
-    return { type: LOGIN_USER_SUCCESS, user };
+function loginSuccess(role) {
+    return { type: LOGIN_SUCCESS, role }
 }
 
-function loginUserFail(user, error) {
-    return { type: LOGIN_USER_FAIL, user, error };
+function loginFailure() {
+    return { type: LOGIN_FAILURE }
+}
+
+
+
+export function logout() {
+    return dispatch => {
+        dispatch(logoutRequest());
+        Auth.deauthenticateUser();
+        dispatch(logoutSuccess());
+        browserHistory.push('/');
+    }
+}
+
+function logoutRequest() {
+    return { type: LOGOUT_REQUEST }
+}
+
+function logoutSuccess() {
+    return { type: LOGOUT_SUCCESS }
+}
+
+function logoutFailure() {
+    return { type: LOGOUT_FAILURE }
 }

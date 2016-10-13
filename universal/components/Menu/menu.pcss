@@ -1,0 +1,52 @@
+.menu {
+  display: block;
+  line-height: 2;
+  padding: 1rem 0 3rem 0;
+
+  & > ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    & > li {
+      display: inline-block;
+      margin: 0 10px;
+
+      &:first-child {
+        margin: 0 10px 0 0;
+      }
+
+      &:last-child {
+        margin: 0 0 0 10px;
+      }
+
+      &.pullRight {
+        float: right;
+      }
+
+      & > a {
+        color: #03A9F4;
+        font-weight: 800;
+        text-decoration: none;
+
+        &.active {
+          color: #212121;
+          cursor: default;
+          pointer-events: none;
+        }
+      }
+
+      & > button {
+        color: #03A9F4;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+        outline: none;
+        background-color: transparent;
+        border: none;
+        display: inline;
+        padding: 0;
+      }
+    }
+  }
+}
