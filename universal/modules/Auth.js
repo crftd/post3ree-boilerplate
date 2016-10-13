@@ -40,7 +40,7 @@ class Auth {
      */
 
     static getUserId() {
-        return Buffer(this.getToken().split('.')[1], 'base64').toString('ascii').split('\"')[3];
+        return Buffer(this.getToken().split('.')[1], 'base64').toString('ascii').split('"')[3];
     }
 
     /**
@@ -50,7 +50,7 @@ class Auth {
      */
 
     static getUserRole() {
-        return Buffer(this.getToken().split('.')[1], 'base64').toString('ascii').split('\"')[7];
+        return Buffer(this.getToken().split('.')[1], 'base64').toString('ascii').split('"')[7];
     }
 
 }

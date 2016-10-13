@@ -30,7 +30,7 @@ if (module.hot) {
     module.hot.accept('../reducers', () =>
         store.replaceReducer(combineReducers({
             routing: routerReducer,
-            app: require('../reducers'),
+            app: reducers,
         }))
     );
 }

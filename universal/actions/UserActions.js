@@ -5,7 +5,7 @@ import Auth from '../modules/Auth'
 import { registerUrl, loginUrl,
     REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE,
     LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,
-    LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE } from './constants'
+    LOGOUT_REQUEST, LOGOUT_SUCCESS } from './constants'
 
 export function register(user) {
     return dispatch => {
@@ -15,7 +15,7 @@ export function register(user) {
             .post(registerUrl)
             .send({ user })
             .set('Accept', 'application/json')
-            .end((err, res) => {
+            .end(err => {
                 if (err) {
                     dispatch(registerFailure());
                 } else {
@@ -37,7 +37,6 @@ function registerSuccess() {
 function registerFailure() {
     return { type: REGISTER_FAILURE }
 }
-
 
 
 export function login(user) {
@@ -73,7 +72,6 @@ function loginFailure() {
 }
 
 
-
 export function logout() {
     return dispatch => {
         dispatch(logoutRequest());
@@ -89,8 +87,4 @@ function logoutRequest() {
 
 function logoutSuccess() {
     return { type: LOGOUT_SUCCESS }
-}
-
-function logoutFailure() {
-    return { type: LOGOUT_FAILURE }
 }

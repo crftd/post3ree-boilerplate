@@ -45,6 +45,6 @@ Main.childContextTypes = {
     isAuthenticated: PropTypes.bool
 };
 
-export default connect (state => ({
+export default connect(state => ({
     isAuthenticated: state.auth.isAuthenticated
 }))(Main)
