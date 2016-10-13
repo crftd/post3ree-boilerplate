@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Auth from '../../modules/Auth'
 
-import { login } from '../../actions/UserActions'
+import { loginSuccess } from '../../actions/UserActions'
 
 import '../common/main.pcss'
 
@@ -11,10 +11,20 @@ import Menu from '../../components/Menu/Menu'
 
 class Main extends Component {
     componentDidMount() {
+        const { dispatch, isAuthenticated } = this.props;
+
         if (Auth.isUserAuthenticated()) {
-            if (!this.props.isAuthenticated) {
-                this.props.dispatch(login(Auth.getUserRole()));
+            if (!isAuthenticated) {
+                dispatch(loginSuccess(Auth.getUserRole()));
             }
+        }
+    }
+
+    getChildContext() {
+        const { isAuthenticated } = this.props;
+
+        return {
+            isAuthenticated
         }
     }
 
@@ -30,7 +40,10 @@ class Main extends Component {
     }
 }
 
+Main.childContextTypes = {
+    isAuthenticated: PropTypes.bool
+};
+
 export default connect (state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    role: state.auth.role
+    isAuthenticated: state.auth.isAuthenticated
 }))(Main)

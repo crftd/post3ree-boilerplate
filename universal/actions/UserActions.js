@@ -64,7 +64,7 @@ function loginRequest() {
     return { type: LOGIN_REQUEST }
 }
 
-function loginSuccess(role) {
+export function loginSuccess(role) {
     return { type: LOGIN_SUCCESS, role }
 }
 

@@ -59,15 +59,15 @@ app.use(passport.session());
 app.get('/robots.txt', (req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'images', 'favicon.ico')));
 
-app.post('/api/v1/projects', api.addProject);
-app.get('/api/v1/projects', api.listProjects);
-app.post('/api/v1/register', userAPI.register);
-app.post('/api/v1/login', userAPI.logIn);
-app.get('/logout', userAPI.logOut);
+/* open api */
+app.post('/openapi/v1/register', userAPI.register);
+app.post('/openapi/v1/login', userAPI.logIn);
 
-/**
- * Universal Application endpoint
- */
+/* api */
+
+/* admin api */
+
+/* universal app endpoint */
 app.get('*', uni.handleRender);
 
 httpServer.listen(port);

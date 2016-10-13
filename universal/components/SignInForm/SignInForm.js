@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import { login } from '../../actions/UserActions'
 
@@ -7,7 +8,7 @@ import s from './signInForm.pcss'
 import Input from '../../components/common/Input/Input'
 import Button from '../../components/common/Button/Button'
 
-export default class SignInForm extends Component {
+class SignInForm extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -94,3 +95,5 @@ export default class SignInForm extends Component {
         )
     }
 }
+
+export default connect(() => ({}))(SignInForm)
