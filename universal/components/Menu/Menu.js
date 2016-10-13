@@ -1,23 +1,12 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 
-import { logout, login } from '../../actions/UserActions'
+import { logout } from '../../actions/UserActions'
 
 import s from './menu.pcss'
 
 import { IndexLink, Link } from 'react-router'
-import Auth from '../../modules/Auth'
 
-class Menu extends Component {
-
-    componentDidMount() {
-        if (Auth.isUserAuthenticated()) {
-            if (!this.props.isAuthenticated) {
-                this.props.dispatch(login(Auth.getUserRole()));
-            }
-        }
-    }
-
+export default class Menu extends Component {
     render() {
         const { dispatch, isAuthenticated } = this.props;
 
@@ -47,8 +36,3 @@ class Menu extends Component {
         )
     }
 }
-
-export default connect (state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    role: state.auth.role
-}))(Menu)
