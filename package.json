@@ -9,8 +9,8 @@
     "lint": "eslint client server front test server.js dbSetup.js",
     "start": "NODE_ENV=development node server.babel.js",
     "start:prod": "NODE_ENV=production node server.babel.js",
-    "test": "./node_modules/mocha/bin/mocha --compilers js:babel-core/register ./test/test_helper.js --recursive",
-    "test:watch": "npm run test -- --watch"
+    "test:jest": "jest",
+    "test:jest:watch": "npm run test:jest -- --watch"
   },
   "repository": {
     "type": "git",
@@ -67,6 +67,7 @@
     "http": "0.0.0",
     "image-webpack-loader": "^2.0.0",
     "immutable": "^3.7.6",
+    "jest": "^16.0.1",
     "jsonwebtoken": "^7.1.9",
     "moment": "^2.13.0",
     "node-uuid": "^1.4.7",

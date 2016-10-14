@@ -5,14 +5,14 @@ const auth = (state = {
     role: ''
 }, action) => {
     switch (action.type) {
-        case LOGIN_SUCCESS:
-            return { ...state, isAuthenticated: true, role: action.role };
+    case LOGIN_SUCCESS:
+        return { ...state, isAuthenticated: true, role: action.role };
 
-        case LOGOUT_SUCCESS:
-            return { ...state, isAuthenticated: false, role: '' };
+    case LOGOUT_SUCCESS:
+        return { ...state, isAuthenticated: false, role: '' };
 
-        default:
-            return state;
+    default:
+        return state;
     }
 };
 
