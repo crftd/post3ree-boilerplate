@@ -10,7 +10,7 @@
     "start": "NODE_ENV=development node server.babel.js",
     "start:prod": "NODE_ENV=production node server.babel.js",
     "test:jest": "jest",
-    "test:jest:watch": "npm run test:jest -- --watch"
+    "test:jest:watch": "npm run test:jest -- --watch",
     "test": "./node_modules/mocha/bin/mocha --compilers js:babel-core/register ./test/test_helper.js --recursive",
     "test:cucumber": "NODE_ENV=test node dbSetup.babel.js && NODE_ENV=test forever start server.babel.js && sleep 10 && NODE_ENV=test ./node_modules/.bin/cucumber-js --compiler js:babel-core/register ./test/cases ; forever stopall ; NODE_ENV=test node dbDrop.babel.js",
     "test:watch": "npm run test -- --watch"
