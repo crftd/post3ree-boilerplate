@@ -62,6 +62,8 @@ app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'images'
 /* open api */
 app.post('/openapi/v1/register', userAPI.register);
 app.post('/openapi/v1/login', userAPI.logIn);
+app.get('/openapi/v1/user', userAPI.getUser);
+app.get('/logout', userAPI.logOut);
 
 /* api */
 

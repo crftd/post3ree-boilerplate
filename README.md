@@ -18,3 +18,15 @@ This will create a directory with db-files and start RethinkDB server. DB dashbo
 `$ npm i`  
 
 `$ npm run start`
+
+## Testing
+### BDD
+We are using [cucumber-js](https://github.com/cucumber/cucumber-js) for BDD.
+
+You will probably want to install [forever](https://github.com/foreverjs/forever) first
+
+`npm i -g  forever`
+
+Then run test
+
+`npm run test:cucumber`

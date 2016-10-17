@@ -1,3 +1,7 @@
+/**
+ * Created by hex22a on 31.03.16.
+ * user api
+ */
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 
@@ -6,37 +10,33 @@ import config from 'config';
 
 import * as db from './service/db';
 
-const Chance = require('chance');
-const chance = new Chance();
-
 function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
 export function logIn(req, res, next) {
-    passport.authenticate('json-login', (err, token, user) => { //
+    // noinspection JSUnresolvedFunction
+    passport.authenticate('json-login', (err, token, user) => {
         if (err) {
             res.status(400);
             res.json({ error: err });
+        } else if (user) {
+            req.logIn(user, logInError => {
+                if (logInError) {
+                    res.status(400);
+                    res.json({ error: logInError });
+                } else {
+                    res.json({ token });
+                    return next();
+                }
+                return logInError;
+            });
         } else {
-            if (user) {
-                req.logIn(user, (err) => {
-                    if (err) {
-                        res.status(400);
-                        res.json({ error: err });
-                    } else {
-                        res.json({ token });
-                        return next();
-                    }
-                    return err;
-                });
-            } else {
-                res.status(400);
-                res.json({ error: 'No user' });
-            }
-            return err;
+            res.status(400);
+            res.json({ error: 'No user' });
         }
+        return err;
     })(req, res, next);
 }
 
@@ -71,10 +71,10 @@ export function register(req, res) {
 
                 // Saving the new user to DB
                 db.saveUser(user,
-                    (err, saved, id) => {
-                        if ((err) || (!saved)) {
+                    (savingError, saved, id) => {
+                        if ((savingError) || (!saved)) {
                             res.status(400);
-                            res.json({ err });
+                            res.json({ savingError });
                         } else {
                             res.json({ id });
                         }
@@ -90,7 +90,7 @@ export function getUser(req, res) {
         res.json({ error: 'Bad request' });
     }
 
-    let sendResponse = (err, user) => {
+    const sendResponse = (err, user) => {
         if (err) {
             res.status(400);
             res.json({ err });
@@ -105,8 +105,8 @@ export function getUser(req, res) {
     } else if (req.query.email) {
         db.findUserByEmail(req.query.email, sendResponse)
     } else if (req.headers.authorization) {
-        let token = req.headers.authorization;
-        jwt.verify(token, config.jwtSecret, function(err, decoded) {
+        const token = req.headers.authorization;
+        jwt.verify(token, config.jwtSecret, (err, decoded) => {
             if (err) {
                 res.status(401);
                 res.json(null);
