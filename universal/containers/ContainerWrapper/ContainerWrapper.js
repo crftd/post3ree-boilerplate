@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Auth from '../../modules/Auth'
 
@@ -16,10 +16,22 @@ const ContainerWrapperHOC = Container => {
             }
         }
 
+        getChildContext() {
+            const { isAuthenticated } = this.props;
+
+            return {
+                isAuthenticated
+            }
+        }
+
         render() {
             return <Container { ...this.props } isAuthenticated={ this.props.isAuthenticated } />
         }
     }
+
+    ContainerWrapper.childContextTypes = {
+        isAuthenticated: PropTypes.bool
+    };
 
     return connect(state => ({
         isAuthenticated: state.auth.isAuthenticated
