@@ -1,9 +1,9 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { routerReducer } from 'react-router-redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import { routerReducer } from 'react-router-redux'
 
-import reducers from '../reducers';
-import DevTools from '../containers/devTools';
+import reducers from '../reducers'
+import DevTools from '../containers/devTools'
 
 export default (req, initialState) => {
     console.log('Server router!');
@@ -21,6 +21,6 @@ export default (req, initialState) => {
             DevTools.instrument()
         );
     }
+
     return createStore(rootReducer, initialState, enhancer);
 };
-
