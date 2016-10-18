@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import ContainerWrapperHOC from '../ContainerWrapper/ContainerWrapper'
-import Container from '../../components/Container/Container'
-import Menu from '../../components/Menu/Menu'
-import SignInForm from '../../components/SignInForm/SignInForm'
+import ContainerWrapperHOC from './ContainerWrapper'
+import Container from '../components/Container/Container'
+import Menu from '../components/Menu/Menu'
+import SignInForm from '../components/SignInForm/SignInForm'
 
 class SignIn extends Component {
     render() {

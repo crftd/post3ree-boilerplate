@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import '../common/main.pcss'
+import './common/main.pcss'
 
-import ContainerWrapperHOC from '../ContainerWrapper/ContainerWrapper'
-import Container from '../../components/Container/Container'
-import Menu from '../../components/Menu/Menu'
+import ContainerWrapperHOC from './ContainerWrapper'
+import Container from '../components/Container/Container'
+import Menu from '../components/Menu/Menu'
 
 class Main extends Component {
     render() {

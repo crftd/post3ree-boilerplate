@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Auth from '../../modules/Auth'
+import Auth from '../modules/Auth'
 
-import { loginSuccess } from '../../actions/UserActions'
+import { loginSuccess } from '../actions/UserActions'
 
 const ContainerWrapperHOC = Container => {
     class ContainerWrapper extends Component {
