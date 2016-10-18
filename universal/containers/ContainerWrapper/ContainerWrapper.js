@@ -11,17 +11,14 @@ const ContainerWrapperHOC = Container => {
 
             if (Auth.isUserAuthenticated()) {
                 if (!isAuthenticated) {
-                    dispatch(loginSuccess(Auth.getUserRole()));
+                    dispatch(loginSuccess(Auth.getPayload()));
                 }
             }
         }
 
         getChildContext() {
-            const { isAuthenticated } = this.props;
-
-            return {
-                isAuthenticated
-            }
+            const { isAuthenticated, uuid, role } = this.props;
+            return { isAuthenticated, uuid, role };
         }
 
         render() {
@@ -30,11 +27,15 @@ const ContainerWrapperHOC = Container => {
     }
 
     ContainerWrapper.childContextTypes = {
-        isAuthenticated: PropTypes.bool
+        isAuthenticated: PropTypes.bool,
+        uuid: PropTypes.string,
+        role: PropTypes.string
     };
 
     return connect(state => ({
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthenticated: state.auth.isAuthenticated,
+        uuid: state.auth.payload.sub,
+        role: state.auth.payload.role
     }))(ContainerWrapper);
 };
 

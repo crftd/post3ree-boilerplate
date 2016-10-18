@@ -52,7 +52,7 @@ export function login(user) {
                     dispatch(loginFailure());
                 } else {
                     Auth.authenticateUser(res.body.token);
-                    dispatch(loginSuccess(Auth.getUserRole()));
+                    dispatch(loginSuccess(Auth.getPayload(res.body.token)));
                     browserHistory.push('/');
                 }
             })
@@ -63,8 +63,8 @@ function loginRequest() {
     return { type: LOGIN_REQUEST }
 }
 
-export function loginSuccess(role) {
-    return { type: LOGIN_SUCCESS, role }
+export function loginSuccess(payload) {
+    return { type: LOGIN_SUCCESS, payload }
 }
 
 function loginFailure() {

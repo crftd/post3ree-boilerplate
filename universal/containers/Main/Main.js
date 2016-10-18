@@ -12,7 +12,7 @@ class Main extends Component {
         return (
             <Container>
                 <Menu/>
-                <div>Hello{!this.props.isAuthenticated && ', anonymous'}!</div>
+                <div>Hello{!this.props.isAuthenticated && ', anonymous'}{this.props.isAuthenticated && `, ${this.props.role}`}!</div>
             </Container>
         )
     }

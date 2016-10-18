@@ -34,23 +34,15 @@ class Auth {
     }
 
     /**
-     * Get a user id
-     *
-     * @returns {string} id
+     * Get token payload
+     * @param token
+     * @returns {object} payload
      */
 
-    static getUserId() {
-        return Buffer(this.getToken().split('.')[1], 'base64').toString('ascii').split('"')[3];
-    }
-
-    /**
-     * Get a user role
-     *
-     * @returns {string} role
-     */
-
-    static getUserRole() {
-        return Buffer(this.getToken().split('.')[1], 'base64').toString('ascii').split('"')[7];
+    static getPayload(token = this.getToken()) {
+        let payload = token.split('.')[1];
+        payload = JSON.parse(Buffer(payload, 'base64').toString('ascii'));
+        return payload;
     }
 
 }
