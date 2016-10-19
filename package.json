@@ -1,6 +1,6 @@
 {
   "name": "post3ree-boilerplate",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Boilerplate for nodejs universal application using 3REE stack + PostCSS",
   "main": "server.js",
   "scripts": {
