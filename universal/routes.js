@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react'/* global __DEV__:true */
 import { Route, IndexRoute } from 'react-router'
 
 import Main from './containers/Main'

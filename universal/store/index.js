@@ -1,3 +1,4 @@
+/* global __DEV__:true */
 if (typeof window === 'undefined') {
     module.exports = require('./configureStore.server');
 } else {
