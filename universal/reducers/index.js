@@ -1,3 +1,4 @@
 import auth from './auth'
+import objectAssign from 'object-assign'
 
-export default Object.assign({}, auth);
+export default objectAssign({}, auth);
