@@ -1,4 +1,6 @@
 # post3ree-boilerplate
+[![Build Status](https://travis-ci.org/hex22a/post3ree-boilerplate.svg?branch=master)](https://travis-ci.org/hex22a/post3ree-boilerplate)
+
 Boilerplate for NodeJS universal application using 3REE stack + PostCSS
 
 ## Requires RethinkDB
