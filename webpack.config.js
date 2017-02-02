@@ -1,37 +1,49 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var config = require('config');
+import path from 'path';
+import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import FaviconPlugin from 'favicons-webpack-plugin';
+import stylelint from 'stylelint';
+import pcssImport from 'postcss-import';
+import autoprefixer from 'autoprefixer';
+import precss from 'precss';
+import pcssClearfix from 'postcss-clearfix';
+import pcssVars from 'postcss-simple-vars';
+import pcssFonts from 'postcss-font-magician';
 
-var isDev = (process.env.NODE_ENV === 'development');
-var appEntry = './client/app';
+const appEntry = './client/app';
 
-var autoprefixer = require('autoprefixer');
-var precss = require('precss');
-var pcss_normalize = require('postcss-normalize');
-var pcss_clearfix = require('postcss-clearfix');
-var pcss_vars = require('postcss-simple-vars');
-//var pcss_fonts = require('postcss-font-magician')(require('./fonts/fonts'));
-var pcss_fonts = require('postcss-font-magician');
-
-
-var defineEnvPlugin = new webpack.DefinePlugin({
-    __DEV__: isDev
+const defineEnvPlugin = new webpack.DefinePlugin({
+    __DEV__: process.env.NODE_ENV === 'development'
 });
 
-var entryScripts = [ appEntry ];
-var output = {
-    filename: 'bundle.js',
+const entryScripts = {
+    client: appEntry
+};
+
+const output = {
+    filename: '[name].js',
+    chunkFilename: '[id].js',
     path: path.join(__dirname, 'public'),
     publicPath: '/public/'
 };
 
-var plugins = [
+const plugins = [
     defineEnvPlugin,
-    new ExtractTextPlugin('app.css', { allChunks: true })
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'commons',
+        filename: 'commons.js'
+    }),
+    new ExtractTextPlugin({
+        filename: '[name].css',
+        allChunks: true
+    }),
+    new FaviconPlugin({
+        logo: './fav.png',
+        prefix: 'icons/'
+    })
 ];
 
-var modulePreLoaders = [
+const modulePreLoaders = [
     {
         test: /\.jsx?$/,
         loaders: ['eslint'],
@@ -40,7 +52,7 @@ var modulePreLoaders = [
     }
 ];
 
-var moduleLoaders = [
+const moduleLoaders = [
     {
         test: /\.jsx?$/,
         loader: 'babel-loader',
@@ -49,11 +61,14 @@ var moduleLoaders = [
     },
     {
         test: /\.pcss$/i,
-        loader: ExtractTextPlugin.extract('style-loader', `css-loader?modules&localIdentName=[name]_[local]__[hash:base64:5]!postcss-loader`)
+        loader: ExtractTextPlugin.extract({
+            notExtractLoader: 'style-loader',
+            loader: 'css?modules&importLoaders=1&localIdentName=[name]_[local]__[hash:base64]!postcss'
+        })
     },
     {
         test: /\.css$/i,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        loader: ExtractTextPlugin.extract({ notExtractLoader: 'style-loader', loader: 'css-loader' })
     },
     {
         test: /\.(jpe?g|png|gif)$/i,
@@ -71,13 +86,14 @@ var moduleLoaders = [
 module.exports = {
     devtool: 'eval',
     entry: entryScripts,
-    output: output,
-    plugins: plugins,
+    output,
+    plugins,
     module: {
         preLoaders: modulePreLoaders,
         loaders: moduleLoaders
     },
-    postcss: function() {
-        return [autoprefixer, precss, pcss_clearfix, pcss_vars, pcss_normalize, pcss_fonts]
-    }
+    postcss: () =>
+        [stylelint, pcssImport({
+            path: [path.resolve(__dirname, 'node_modules')]
+        }), autoprefixer(({ browsers: ['> 5%', 'ie >= 8', 'Firefox < 20'] })), precss, pcssClearfix, pcssVars, pcssFonts]
 };
