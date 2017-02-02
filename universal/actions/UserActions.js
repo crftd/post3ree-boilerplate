@@ -13,7 +13,7 @@ export function register(user) {
 
         return request
             .post(registerUrl)
-            .send({ user })
+            .send(user)
             .set('Accept', 'application/json')
             .end(err => {
                 if (err) {
@@ -45,7 +45,7 @@ export function login(user) {
 
         return request
             .post(loginUrl)
-            .send({ user })
+            .send(user)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (err) {

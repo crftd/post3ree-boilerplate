@@ -2,9 +2,8 @@ Feature: Auth
   JWT based registration and auth
 
   Scenario Outline: Valid e-mail registration
-    Given I have an empty DB
     When I send POST request to register with <email> and <password>
-    Then I get uuid of new user and I can access new user by uuid or <email> (no password, meta-only)
+    Then I get uuid of new user and I can access new user by id (no password, meta-only)
 
     Examples:
       | email               | password  |
@@ -12,7 +11,6 @@ Feature: Auth
       | test@example.com    | yolo123   |
 
   Scenario: Busy e-mail registration
-    Given I have DB with user with email test@example.com and 123456 password
     When I call api function register with test@example.com and anypassword
     Then I get error message
 

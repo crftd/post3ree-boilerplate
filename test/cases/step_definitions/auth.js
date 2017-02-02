@@ -18,18 +18,13 @@ const myStepDefinitionsWrapper = function stepDefinition() {
     let logout = false;
 
 
-    this.Given(/^I have an empty DB$/, () => {
-        console.warn('[x22a] Well it is given');
-    });
-
     this.When(/^I send POST request to register with (.*) and (.*)$/, (email, password) => {
         const xhr = new XMLHttpRequest();
 
-        const user = JSON.stringify({ user: {
+        const user = JSON.stringify({
             username: email,
             password,
             role: 'user'
-        }
         });
 
         xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
@@ -43,26 +38,10 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         }
     });
 
-    this.Then(/^I get uuid of new user and I can access new user by uuid or (.*) \(no password, meta\-only\)$/, email => {
+    this.Then(/^I get uuid of new user and I can access new user by id \(no password, meta-only\)$/, () => {
         const xhr = new XMLHttpRequest();
 
-        let params = `uuid=${encodeURIComponent(browser.getId())}`;
-
-        xhr.open('GET', `http://${config.express.host}:${config.express.port}/openapi/v1/user?${params}`, false);
-        xhr.send();
-
-        if (xhr.status !== 200) {
-            throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
-        } else {
-            const result = JSON.parse(xhr.responseText);
-            if ({}.hasOwnProperty.call(result.user, 'password')) {
-                throw new Error('Password transfer detected!')
-            }
-        }
-
-        // get by email
-
-        params = `email=${encodeURIComponent(email)}`;
+        const params = `id=${encodeURIComponent(browser.getId())}`;
 
         xhr.open('GET', `http://${config.express.host}:${config.express.port}/openapi/v1/user?${params}`, false);
         xhr.send();
@@ -77,19 +56,14 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         }
     });
 
-
-    this.Given(/^I have DB with user with email test@example\.com and 123456 password$/, () => {
-        console.warn('[x22a] we might have users from previous steps');
-    });
 
     this.When(/^I call api function register with test@example\.com and anypassword$/, () => {
         const xhr = new XMLHttpRequest();
 
-        const user = JSON.stringify({ user: {
+        const user = JSON.stringify({
             username: 'test@example.com',
             password: 'somepassword',
             role: 'user'
-        }
         });
 
         xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
@@ -129,11 +103,10 @@ const myStepDefinitionsWrapper = function stepDefinition() {
     this.Given(/^Registered user with username: (.*) and password: (.*)$/, (email, password) => {
         const xhr = new XMLHttpRequest();
 
-        const user = JSON.stringify({ user: {
+        const user = JSON.stringify({
             username: email,
             password,
             role: 'user'
-        }
         });
 
         xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
@@ -148,10 +121,9 @@ const myStepDefinitionsWrapper = function stepDefinition() {
     this.When(/^I send POST request to login with username: (.*) and password: (.*)$/, (email, password) => {
         const xhr = new XMLHttpRequest();
 
-        const user = JSON.stringify({ user: {
-            username: email,
+        const user = JSON.stringify({
+            id: email,
             password
-        }
         });
 
         xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/login`, false);

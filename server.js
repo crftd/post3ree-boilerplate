@@ -11,9 +11,8 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import authCheckMiddleware from './server/middlewares/auth-check'
 import adminCheckMiddleware from './server/middlewares/admin-check'
 
-import * as api from './server/api/http';
 import * as userAPI from './server/api/user';
-import * as uni from './server/app.js';
+import * as uni from './server/app';
 import * as db from './server/api/service/db';
 import webpackConfig from './webpack.config';
 
@@ -62,7 +61,7 @@ app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'images'
 /* open api */
 app.post('/openapi/v1/register', userAPI.register);
 app.post('/openapi/v1/login', userAPI.logIn);
-app.get('/openapi/v1/user', userAPI.getUser);
+app.get('/openapi/v1/user', userAPI.fetchUser);
 app.get('/logout', userAPI.logOut);
 
 /* api */

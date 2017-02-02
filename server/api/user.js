@@ -8,13 +8,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 
-import * as db from './service/db';
+import { getUser, saveUser } from './service/db';
 
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
+/**
+ * @param req
+ * @param res
+ * @param next
+ */
 export function logIn(req, res, next) {
     // noinspection JSUnresolvedFunction
     passport.authenticate('json-login', (err, token, user) => {
@@ -40,78 +45,64 @@ export function logIn(req, res, next) {
     })(req, res, next);
 }
 
-export function register(req, res) {
-    if (req.body.user == null) {
+export async function register(req, res) {
+    const { username, password, role } = req.body;
+    if (!username || !password || !role) {
         res.status(400);
         res.json({ error: 'Bad request' });
     }
-    if (!validateEmail(req.body.user.username)) {
+    if (!validateEmail(username)) {
         // Probably not a good email address.
         res.status(400);
         res.json({ error: 'Not a valid email address!' });
         return;
     }
 
-    db.findUserByEmail(req.body.user.username,
-        (err, row) => {
-            if (err) {
-                res.status(400);
-                res.json({ error: 'Oops' });
-                return;
-            }
+    const existing = await getUser(username);
+    if (existing) {
+        res.status(400);
+        res.json({ error: 'A user with this email address already exists.' });
+    } else {
+        const user = { id: username, password, role };
 
-            if (row) {
-                res.status(400);
-                res.json({ error: 'Email is already in Database' });
-            } else {
-                // salt hash password
-                const user = req.body.user;
-
-                user.password = bcrypt.hashSync(user.password, 8);
-
-                // Saving the new user to DB
-                db.saveUser(user,
-                    (savingError, saved, id) => {
-                        if ((savingError) || (!saved)) {
-                            res.status(400);
-                            res.json({ savingError });
-                        } else {
-                            res.json({ id });
-                        }
-                    }
-                );
-            }
-        });
+        user.password = bcrypt.hashSync(password, 8);
+        try {
+            const result = await saveUser(user);
+            res.json(result);
+        } catch (e) {
+            res.status(500);
+            res.json({ error: e });
+        }
+    }
 }
 
-export function getUser(req, res) {
-    if (req.query.uuid == null && req.query.email == null && req.headers.authorization == null) {
+export function fetchUser(req, res) {
+    if (!req.query.id && !req.headers.authorization) {
         res.status(400);
         res.json({ error: 'Bad request' });
     }
 
-    const sendResponse = (err, user) => {
-        if (err) {
-            res.status(400);
-            res.json({ err });
-        } else {
+    const fetchUserMagic = async userId => {
+        try {
+            const user = await getUser(userId);
             delete user.password;
             res.json({ user });
+        } catch (err) {
+            res.status(500);
+            res.json({ err });
         }
     };
 
-    if (req.query.uuid) {
-        db.findUserById(req.query.uuid, sendResponse)
-    } else if (req.query.email) {
-        db.findUserByEmail(req.query.email, sendResponse)
+    if (req.query.id) {
+        fetchUserMagic(req.query.id)
     } else if (req.headers.authorization) {
         const token = req.headers.authorization;
-        jwt.verify(token, config.jwtSecret, (err, decoded) => {
+        jwt.verify(token, config.jwtSecret, async (err, decoded) => {
             if (err) {
                 res.status(401);
                 res.json(null);
             } else {
-                db.findUserById(decoded.sub, sendResponse);
+                fetchUserMagic(decoded.id);
             }
         });
     }
