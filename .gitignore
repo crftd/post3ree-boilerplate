@@ -3,3 +3,4 @@
 /rethinkdb_data
 npm-debug.log
 /yarn.lock
+/coverage/
