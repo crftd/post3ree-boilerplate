@@ -1,5 +1,8 @@
 # post3ree-boilerplate
 [![Build Status](https://travis-ci.org/hex22a/post3ree-boilerplate.svg?branch=master)](https://travis-ci.org/hex22a/post3ree-boilerplate)
+[![Coverage Status](https://coveralls.io/repos/github/hex22a/post3ree-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/hex22a/post3ree-boilerplate?branch=master)
+
+![Cover](https://pp.vk.me/c837625/v837625764/1f1fc/p-DfkiSI8SE.jpg)
 
 Boilerplate for NodeJS universal application using 3REE stack + PostCSS
 

@@ -2,3 +2,4 @@
 /.idea
 /rethinkdb_data
 npm-debug.log
+/yarn.lock

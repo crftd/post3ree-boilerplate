@@ -1,3 +1,5 @@
+/* global define, it, describe, expect */
+
 import reducer from '../auth'
 import * as constants from '../../actions/constants'
 
