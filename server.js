@@ -12,7 +12,7 @@ import authCheckMiddleware from './server/middlewares/auth-check'
 import adminCheckMiddleware from './server/middlewares/admin-check'
 
 import * as userAPI from './server/api/user';
-import * as uni from './server/app';
+import uni from './server/app';
 import * as db from './server/api/service/db';
 import webpackConfig from './webpack.config';
 
@@ -69,6 +69,6 @@ app.get('/logout', userAPI.logOut);
 /* admin api */
 
 /* universal app endpoint */
-app.get('*', uni.handleRender);
+app.get('*', uni);
 
 httpServer.listen(port);
