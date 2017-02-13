@@ -9,7 +9,7 @@ import routes from '../universal/routes';
 
 const isDev = (process.env.NODE_ENV !== 'production');
 
-export function handleRender(req, res) {
+export default function (req, res) {
     console.log(' [x] Request for', req.url);
     const initialState = {};
 
