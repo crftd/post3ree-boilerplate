@@ -12,7 +12,7 @@ const PAYLOAD = {
     uuid: 'jest@example.com',
     role: 'user'
 };
-const TOKEN = jwt.sign(PAYLOAD, config.jwtSecret);
+const TOKEN = jwt.sign(PAYLOAD, config.jwt.accessToken.secret);
 
 describe('Auth module', () => {
     describe('getPayload', () => {

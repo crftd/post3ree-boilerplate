@@ -38,7 +38,7 @@ export default class Browser {
     }
 
     getAccessToken() {
-        return this[_accessToken]
+        return this[_accessToken];
     }
 
     setId(id) {

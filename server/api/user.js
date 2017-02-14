@@ -33,15 +33,14 @@ export function logIn(req, res, next) {
                     res.json({ error: logInError });
                 } else {
                     res.json({ token });
-                    return next();
                 }
-                return logInError;
+                return next();
             });
         } else {
             res.status(400);
             res.json({ error: 'No user' });
         }
-        return err;
+        return next();
     })(req, res, next);
 }
 
@@ -60,7 +59,7 @@ export async function register(req, res) {
 
     const existing = await getUser(username);
     if (existing) {
-        res.status(400);
+        res.status(409);
         res.json({ error: 'A user with this email address already exists.' });
     } else {
         const user = { id: username, password, role };
@@ -97,12 +96,12 @@ export function fetchUser(req, res) {
         fetchUserMagic(req.query.id)
     } else if (req.headers.authorization) {
         const token = req.headers.authorization;
-        jwt.verify(token, config.jwtSecret, async (err, decoded) => {
+        jwt.verify(token, config.jwt.accessToken.secret, async (err, decoded) => {
             if (err) {
                 res.status(401);
                 res.json(null);
             } else {
-                fetchUserMagic(decoded.id);
+                fetchUserMagic(decoded.sub);
             }
         });
     }

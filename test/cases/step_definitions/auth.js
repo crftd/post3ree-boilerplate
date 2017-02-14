@@ -31,11 +31,17 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(user);
 
-        if (xhr.status !== 200) {
-            throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
-        } else {
+        if (xhr.status === 200) {
             browser.setId(JSON.parse(xhr.responseText).id);
+        } else if (xhr.status === 409) {
+            error = true;
+        } else {
+            throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
         }
+    });
+
+    this.Then(/^I get error message and 409 HTTP status code$/, () => {
+        if (!error) { throw new Error('See below') }
     });
 
     this.Then(/^I get uuid of new user and I can access new user by id \(no password, meta-only\)$/, () => {
@@ -79,24 +85,6 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         }
     });
 
-    this.Given(/^Registered user with username: (.*) and password: (.*)$/, (email, password) => {
-        const xhr = new XMLHttpRequest();
-
-        const user = JSON.stringify({
-            username: email,
-            password,
-            role: 'user'
-        });
-
-        xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(user);
-
-        if (xhr.status === 200) {
-            browser.setId(JSON.parse(xhr.responseText).id);
-        }
-    });
-
     this.When(/^I send POST request to login with username: (.*) and password: (.*)$/, (email, password) => {
         const xhr = new XMLHttpRequest();
 
@@ -112,22 +100,21 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         if (xhr.status !== 200) {
             throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
         } else {
-            browser.setAccessToken(JSON.parse(xhr.responseText).accessToken);
-            browser.setRefreshToken(JSON.parse(xhr.responseText).requestToken);
+            browser.setAccessToken(JSON.parse(xhr.responseText).token.accessToken);
+            browser.setRefreshToken(JSON.parse(xhr.responseText).token.refreshToken);
         }
     });
 
     this.Then(/^I get valid JWT token$/, () => {
-        /** @namespace config.jwtSecret */
-        jwt.verify(browser.getRefreshToken(), config.jwtSecret, err => {
+        /** @namespace config.jwt */
+        jwt.verify(browser.getRefreshToken(), config.jwt.refreshToken.secret, err => {
             if (err) {
-                throw new Error('Corrupt refresh token')
+                throw new Error(`Corrupt refresh token. Error: ${err}`)
             }
         });
-        /** @namespace config.jwtSecret */
-        jwt.verify(browser.getAccessToken(), config.jwtSecret, err => {
+        jwt.verify(browser.getAccessToken(), config.jwt.accessToken.secret, err => {
             if (err) {
-                throw new Error('Corrupt access token')
+                throw new Error(`Corrupt access token. Error ${err}`)
             }
         });
     });

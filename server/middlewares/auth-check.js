@@ -8,13 +8,14 @@ export default function (config) {
         }
 
         const token = req.headers.authorization;
-
+        console.log(token);
         // decode the token using a secret key-phrase
-        return jwt.verify(token, config.jwtSecret, async (err, decoded) => {
+        return jwt.verify(token, config.jwt.accessToken.secret, async (err, decoded) => {
             // the 401 code is for unauthorized status
             if (err) { return res.status(401).end(); }
 
-            const userId = decoded.id;
+            console.log(decoded.sub);
+            const userId = decoded.sub;
 
             // check if a user exists
             try {

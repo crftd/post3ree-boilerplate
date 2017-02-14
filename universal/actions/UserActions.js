@@ -49,10 +49,10 @@ export function login(user) {
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (err) {
-                    dispatch(loginFailure());
+                    dispatch(loginFailure(err));
                 } else {
-                    Auth.authenticateUser(res.body.token);
-                    dispatch(loginSuccess(Auth.getPayload(res.body.token)));
+                    Auth.authenticateUser(res.body.token.accessToken);
+                    dispatch(loginSuccess(Auth.getPayload(res.body.token.accessToken)));
                     browserHistory.push('/');
                 }
             })
@@ -67,8 +67,8 @@ export function loginSuccess(payload) {
     return { type: LOGIN_SUCCESS, payload }
 }
 
-function loginFailure() {
-    return { type: LOGIN_FAILURE }
+function loginFailure(error) {
+    return { type: LOGIN_FAILURE, error }
 }
 
 

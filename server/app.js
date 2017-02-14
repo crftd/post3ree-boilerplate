@@ -17,12 +17,6 @@ export default function (req, res) {
 
     // Wire up routing based upon routes
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
-        if (req.user != null) {
-            console.log('[AUTH]', req.user);
-        } else {
-            console.log('[AUTH] unauthorized request');
-        }
-
         if (error) {
             console.log('Error', error);
             res.status(400);
@@ -40,11 +34,11 @@ export default function (req, res) {
         // Render the component to a string
         const html = ReactDOMServer.renderToString(
             <Provider store={store}>
-            <div>
-            <RouterContext {...renderProps} />
-        {devTools}
-        </div>
-        </Provider>
+                <div>
+                    <RouterContext {...renderProps} />
+                    {devTools}
+                </div>
+            </Provider>
         );
 
         res.render('index', { isProd: (!isDev), html, initialState: store.getState() });
