@@ -11,7 +11,7 @@ Feature: Auth
       | test@example.com    | yolo123   |
 
   Scenario: Busy e-mail registration
-    When I call api function register with test@example.com and anypassword
+    When I send POST request to register with example@example.com and anypassword
     Then I get error message
 
   Scenario Outline: Sign In

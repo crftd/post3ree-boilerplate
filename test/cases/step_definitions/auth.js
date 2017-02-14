@@ -56,27 +56,6 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         }
     });
 
-
-    this.When(/^I call api function register with test@example\.com and anypassword$/, () => {
-        const xhr = new XMLHttpRequest();
-
-        const user = JSON.stringify({
-            username: 'test@example.com',
-            password: 'somepassword',
-            role: 'user'
-        });
-
-        xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(user);
-
-        if (xhr.status === 200) {
-            throw new Error('[Good response] (Bad expected)');
-        } else {
-            error = true;
-        }
-    });
-
     this.Then(/^I get error message$/, () => {
         if (!error) { throw new Error('See below') }
     });
@@ -133,15 +112,22 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         if (xhr.status !== 200) {
             throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
         } else {
-            browser.setToken(JSON.parse(xhr.responseText).token);
+            browser.setAccessToken(JSON.parse(xhr.responseText).accessToken);
+            browser.setRefreshToken(JSON.parse(xhr.responseText).requestToken);
         }
     });
 
     this.Then(/^I get valid JWT token$/, () => {
         /** @namespace config.jwtSecret */
-        jwt.verify(browser.getToken(), config.jwtSecret, err => {
+        jwt.verify(browser.getRefreshToken(), config.jwtSecret, err => {
             if (err) {
-                throw new Error('Corrupt token')
+                throw new Error('Corrupt refresh token')
+            }
+        });
+        /** @namespace config.jwtSecret */
+        jwt.verify(browser.getAccessToken(), config.jwtSecret, err => {
+            if (err) {
+                throw new Error('Corrupt access token')
             }
         });
     });
@@ -150,7 +136,7 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         const xhr = new XMLHttpRequest();
 
         xhr.open('GET', `http://${config.express.host}:${config.express.port}/openapi/v1/user`, false);
-        xhr.setRequestHeader('Authorization', browser.getToken());
+        xhr.setRequestHeader('Authorization', browser.getAccessToken());
         xhr.send();
 
         if (xhr.status !== 200) {
