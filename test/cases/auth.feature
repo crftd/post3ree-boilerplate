@@ -11,11 +11,10 @@ Feature: Auth
       | test@example.com    | yolo123   |
 
   Scenario: Busy e-mail registration
-    When I call api function register with test@example.com and anypassword
-    Then I get error message
+    When I send POST request to register with example@example.com and anypassword
+    Then I get error message and 409 HTTP status code
 
   Scenario Outline: Sign In
-    Given Registered user with username: <email> and password: <password>
     When I send POST request to login with username: <email> and password: <password>
     Then I get valid JWT token
 
@@ -25,12 +24,10 @@ Feature: Auth
       | test@example.com    | yolo123   |
 
   Scenario: Logout
-    Given Registered user with username: example@example.com and password: 121212
     When I send POST request to login with username: example@example.com and password: 121212
     And I sent GET request to /logout
     Then I get response with flag to deauthenticate user
 
   Scenario: Get current user
-    Given Registered user with username: example@example.com and password: 121212
     When I send POST request to login with username: example@example.com and password: 121212
     Then I can send GET request to get user data by token

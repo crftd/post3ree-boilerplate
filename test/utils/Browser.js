@@ -6,13 +6,15 @@
 const singleton = Symbol('singleton');
 const singletonEnforcer = Symbol('enforcer');
 
-const _token = Symbol('token');
+const _accessToken = Symbol('accessToken');
+const _refreshToken = Symbol('refreshToken');
 const _uuid = Symbol('uuid');
 
 export default class Browser {
     constructor(enforcer) {
         if (enforcer !== singletonEnforcer) throw new Error('Cannot construct singleton');
-        this[_token] = null;
+        this[_refreshToken] = null;
+        this[_accessToken] = null;
         this[_uuid] = null;
     }
 
@@ -23,12 +25,20 @@ export default class Browser {
         return this[singleton];
     }
 
-    setToken(token) {
-        this[_token] = token;
+    setRefreshToken(token) {
+        this[_refreshToken] = token;
     }
 
-    getToken() {
-        return this[_token];
+    getRefreshToken() {
+        return this[_refreshToken];
+    }
+
+    setAccessToken(token) {
+        this[_accessToken] = token;
+    }
+
+    getAccessToken() {
+        return this[_accessToken];
     }
 
     setId(id) {

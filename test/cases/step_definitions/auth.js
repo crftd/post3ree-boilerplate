@@ -31,11 +31,17 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(user);
 
-        if (xhr.status !== 200) {
-            throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
-        } else {
+        if (xhr.status === 200) {
             browser.setId(JSON.parse(xhr.responseText).id);
+        } else if (xhr.status === 409) {
+            error = true;
+        } else {
+            throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
         }
+    });
+
+    this.Then(/^I get error message and 409 HTTP status code$/, () => {
+        if (!error) { throw new Error('See below') }
     });
 
     this.Then(/^I get uuid of new user and I can access new user by id \(no password, meta-only\)$/, () => {
@@ -53,27 +59,6 @@ const myStepDefinitionsWrapper = function stepDefinition() {
             if ({}.hasOwnProperty.call(result.user, 'password')) {
                 throw new Error('Password transfer detected!')
             }
-        }
-    });
-
-
-    this.When(/^I call api function register with test@example\.com and anypassword$/, () => {
-        const xhr = new XMLHttpRequest();
-
-        const user = JSON.stringify({
-            username: 'test@example.com',
-            password: 'somepassword',
-            role: 'user'
-        });
-
-        xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(user);
-
-        if (xhr.status === 200) {
-            throw new Error('[Good response] (Bad expected)');
-        } else {
-            error = true;
         }
     });
 
@@ -100,24 +85,6 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         }
     });
 
-    this.Given(/^Registered user with username: (.*) and password: (.*)$/, (email, password) => {
-        const xhr = new XMLHttpRequest();
-
-        const user = JSON.stringify({
-            username: email,
-            password,
-            role: 'user'
-        });
-
-        xhr.open('POST', `http://${config.express.host}:${config.express.port}/openapi/v1/register`, false);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(user);
-
-        if (xhr.status === 200) {
-            browser.setId(JSON.parse(xhr.responseText).id);
-        }
-    });
-
     this.When(/^I send POST request to login with username: (.*) and password: (.*)$/, (email, password) => {
         const xhr = new XMLHttpRequest();
 
@@ -133,15 +100,21 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         if (xhr.status !== 200) {
             throw new Error(`[Bad response] Code: ${xhr.status} Res: ${xhr.responseText}`);
         } else {
-            browser.setToken(JSON.parse(xhr.responseText).token);
+            browser.setAccessToken(JSON.parse(xhr.responseText).token.accessToken);
+            browser.setRefreshToken(JSON.parse(xhr.responseText).token.refreshToken);
         }
     });
 
     this.Then(/^I get valid JWT token$/, () => {
-        /** @namespace config.jwtSecret */
-        jwt.verify(browser.getToken(), config.jwtSecret, err => {
+        /** @namespace config.jwt */
+        jwt.verify(browser.getRefreshToken(), config.jwt.refreshToken.secret, err => {
             if (err) {
-                throw new Error('Corrupt token')
+                throw new Error(`Corrupt refresh token. Error: ${err}`)
+            }
+        });
+        jwt.verify(browser.getAccessToken(), config.jwt.accessToken.secret, err => {
+            if (err) {
+                throw new Error(`Corrupt access token. Error ${err}`)
             }
         });
     });
@@ -150,7 +123,7 @@ const myStepDefinitionsWrapper = function stepDefinition() {
         const xhr = new XMLHttpRequest();
 
         xhr.open('GET', `http://${config.express.host}:${config.express.port}/openapi/v1/user`, false);
-        xhr.setRequestHeader('Authorization', browser.getToken());
+        xhr.setRequestHeader('Authorization', browser.getAccessToken());
         xhr.send();
 
         if (xhr.status !== 200) {

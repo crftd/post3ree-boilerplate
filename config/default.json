@@ -9,5 +9,14 @@
     "port": 3000
   },
   "buildDirectory": "build",
-  "jwtSecret": "love will tear us apart"
+  "jwt": {
+      "accessToken": {
+          "secret": "love will trear us apart",
+          "expiresIn": 3600
+      },
+      "refreshToken": {
+          "secret": "my propeller",
+          "expiresIn": 864000
+      }
+  }
 }

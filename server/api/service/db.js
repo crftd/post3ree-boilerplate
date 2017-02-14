@@ -12,6 +12,19 @@ export async function getUser(userId) {
 }
 
 
+export function findToDeserialize(userId, done) {
+    return r
+        .table('users')
+        .get(userId).run()
+        .then((result, err) => {
+            if (err) {
+                done(null, null);
+            } else {
+                done(null, result);
+            }
+        });
+}
+
 export async function saveUser(user) {
     user.added = new Date();
     const qResult = await r

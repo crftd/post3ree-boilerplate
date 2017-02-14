@@ -9,21 +9,29 @@ export default function (config) {
     const JsonStrategy = Json.Strategy;
 
     return new JsonStrategy({
-        usernameProp: 'id',
+        usernameProp: 'username',
         passwordProp: 'password',
     }, (username, password, done) => {
         process.nextTick(async () => {
             try {
                 const user = await getUser(username);
-                console.log(user);
                 if (bcrypt.compareSync(password, user.password)) {
-                    const payload = {
-                        id: user.id,
+                    // sub - subject
+                    // exp - expiresIn
+                    // iss - issuer
+                    // iat - issued at
+                    const accessTokenPayload = {
+                        sub: user.id
                     };
 
-                    const token = jwt.sign(payload, config.jwtSecret);
+                    const refreshTokenPayload = {
+                        sub: user.id
+                    };
 
-                    return done(null, token, user);
+                    const accessToken = jwt.sign(accessTokenPayload, config.jwt.accessToken.secret, { expiresIn: config.jwt.accessToken.expiresIn });
+                    const refreshToken = jwt.sign(refreshTokenPayload, config.jwt.refreshToken.secret, { expiresIn: config.jwt.refreshToken.expiresIn });
+
+                    return done(null, { accessToken, refreshToken }, user);
                 }
                 return done(null, null, false, { message: 'Invalid username or password...' });
             } catch (error) {

@@ -13,7 +13,7 @@ import adminCheckMiddleware from './server/middlewares/admin-check'
 
 import * as userAPI from './server/api/user';
 import uni from './server/app';
-import * as db from './server/api/service/db';
+import { findToDeserialize } from './server/api/service/db';
 import webpackConfig from './webpack.config';
 
 import strategies from './server/passport'
@@ -36,7 +36,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    db.findUserById(id, done);
+    findToDeserialize(id, done);
 });
 
 app.set('views', path.join(__dirname, 'server', 'view'));
