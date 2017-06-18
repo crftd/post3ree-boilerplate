@@ -6,12 +6,13 @@
   "scripts": {
     "build:prod": "NODE_ENV=production webpack",
     "db-setup": "node dbSetup.babel.js",
+    "db-drop": "node dbDrop.babel.js",
     "lint": "eslint client server front test server.js dbSetup.js",
     "start": "NODE_ENV=development node server.babel.js",
     "start:prod": "NODE_ENV=production node server.babel.js",
     "test": "NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test:watch": "npm run test --watch",
-    "test:platform:dev": "cucumber-js --compiler js:babel-core/register"
+    "test:platform:dev": "nightwatch --env chrome"
   },
   "repository": {
     "type": "git",
@@ -126,6 +127,10 @@
     "chai": "^4.0.1",
     "chromedriver": "^2.29.0",
     "coveralls": "^2.11.15",
+    "nightwatch": "^0.9.16",
+    "nightwatch-cucumber": "^7.1.9",
+    "phantomjs-prebuilt": "^2.1.14",
+    "selenium-server": "^3.4.0",
     "selenium-webdriver": "^3.4.0"
   }
 }

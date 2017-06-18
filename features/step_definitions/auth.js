@@ -1,53 +1,43 @@
 import 'babel-polyfill';
+import { client } from 'nightwatch-cucumber';
 import { defineSupportCode } from 'cucumber';
-import { By } from 'selenium-webdriver';
-import { assert } from 'chai';
 
-defineSupportCode(({ Before, After, Then, When, Given }) => {
-  let webDriver = null;
+import config from 'config';
 
-  Before(function () {
-    webDriver = this.driver;
-  });
-
-  After(async () => {
-    // await webDriver.quit();
-  });
+defineSupportCode(({ Then, When, Given }) => {
+  const defaultVisibilityTimeout = 2 * 1000;
+  const baseUrl = config.get('baseUrl');
 
   Given(/^John Doe opens Sign Up page$/, async () => {
-    await webDriver.get('http://localhost:3000/sign-up');
-  });
-
-  When(/^John Doe submits sign-up form with email: (.+) and password: (.+)$/, async (email, password) => {
-    await webDriver
-      .findElement(By.name('email'))
-      .sendKeys(email);
-    await webDriver
-      .findElement(By.name('password'))
-      .sendKeys(password);
-    await webDriver
-      .findElement(By.xpath('//button[text()="Sign up"]'))
-      .click();
-  });
-
-  Then(/^John Doe redirected to Home page$/, async () => {
-    const url = await webDriver.getCurrentUrl();
-    assert.equal(url, 'http://localhost:3000/');
+    console.log(baseUrl);
+    await client.url(`${baseUrl}/sign-up`);
+    await client.waitForElementVisible('//*[text()[contains(.,"Sign Up")]]', defaultVisibilityTimeout);
   });
 
   Given(/^John Doe opens Sign In page$/, async () => {
-    await webDriver.get('http://localhost:3000/sign-in');
+    await client.url(`${baseUrl}/sign-in`);
+    await client.waitForElementVisible('//*[text()[contains(.,"Sign In")]]', defaultVisibilityTimeout);
+  });
+
+  When(/^John Doe submits sign-up form with email: (.+) and password: (.+)$/, async (email, password) => {
+    await client.setValue('//form/*/input[@name="email"]', email);
+    await client.setValue('//form/*/input[@name="password"]', password);
+    await client.click('//form/button[text()[contains(.,"Sign up")]]');
   });
 
   When(/^John Doe submits sign-in form with email: (.+) and password: (.+)$/, async (email, password) => {
-    await webDriver
-      .findElement(By.name('email'))
-      .sendKeys(email);
-    await webDriver
-      .findElement(By.name('password'))
-      .sendKeys(password);
-    await webDriver
-      .findElement(By.xpath('//button[text()="Sign in"]'))
-      .click();
+    await client.setValue('//form/*/input[@name="email"]', email);
+    await client.setValue('//form/*/input[@name="password"]', password);
+    await client.click('//form/button[text()[contains(.,"Sign in")]]');
+  });
+
+  Then(/^John Doe redirected to Sign In page$/, async () => {
+    await client.waitForElementVisible('//*[text()[contains(.,"Sign In")]]', defaultVisibilityTimeout);
+    await client.assert.urlEquals(`${baseUrl}/sign-in`);
+  });
+
+  Then(/^John Doe redirected to Home page$/, async () => {
+    await client.waitForElementVisible('//*[text()[contains(.,"Hello")]]', defaultVisibilityTimeout);
+    await client.assert.urlEquals(`${baseUrl}/`);
   });
 });
