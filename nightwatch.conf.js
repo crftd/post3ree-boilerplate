@@ -48,6 +48,9 @@ module.exports = {
         browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true,
+        chromeOptions: {
+          args: ['--incognito', '--disable-extensions'],
+        },
       },
       selenium: {
         cli_args: {
