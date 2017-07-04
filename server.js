@@ -1,20 +1,17 @@
 import path from 'path';
 import bodyParser from 'body-parser';
-import webpack from 'webpack';
 import express from 'express';
 import expressSession from 'express-session';
 import http from 'http';
 import config from 'config';
 
 import passport from 'passport';
-import webpackDevMiddleware from 'webpack-dev-middleware';
 import authCheckMiddleware from './server/middlewares/auth-check';
 import adminCheckMiddleware from './server/middlewares/admin-check';
 
 import * as userAPI from './server/api/user';
-import uni from './server/app';
+import uni from './server/render/client';
 import { findToDeserialize } from './server/api/service/db';
-import webpackConfig from './webpack.config';
 
 import strategies from './server/passport';
 
@@ -22,10 +19,6 @@ const app = express();
 const httpServer = http.createServer(app);
 const port = config.get('express.port') || 3000;
 
-app.use(webpackDevMiddleware(webpack(webpackConfig), {
-  publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true },
-}));
 app.use('/api', authCheckMiddleware(config));
 app.use('/api/admin', adminCheckMiddleware(config));
 
@@ -64,11 +57,24 @@ app.post('/openapi/v1/login', userAPI.logIn);
 app.get('/openapi/v1/user', userAPI.fetchUser);
 app.get('/logout', userAPI.logOut);
 
-/* api */
+if (process.env.NODE_ENV === 'development') {
+  const webpack = require('webpack');
+  const webpackConfig = require('./webpack.config');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const compiler = webpack(webpackConfig);
+  app.use(webpackDevMiddleware(compiler, { publicPath: '/dist/', stats: { colors: true }, serverSideRender: true }));
+  app.use(webpackHotMiddleware(compiler, { log: false, path: '/__webpack_hmr', heartbeat: 1500 }));
+} else {
+  const stats = require('./dist/stats.json');
+  app.use('/dist', express.static(path.join(__dirname, 'dist')));
+  app.use('*', (req, res, next) => {
+    res.locals.webpackStats = stats;
+    res.locals.webpackStats.toJson = () => stats;
+    next();
+  });
+}
 
-/* admin api */
-
-/* universal app endpoint */
 app.get('*', uni);
 
 httpServer.listen(port);
