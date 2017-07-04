@@ -1,12 +1,14 @@
 {
   "name": "post3ree-boilerplate",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Boilerplate for nodejs universal application using 3REE stack + PostCSS",
   "main": "server.js",
   "scripts": {
     "build:prod": "NODE_ENV=production webpack",
-    "db-setup": "node dbSetup.babel.js",
-    "db-drop": "node dbDrop.babel.js",
+    "db-setup": "babel-node dbSetup.js",
+    "db-drop": "babel-node dbDrop.js",
+    "test:unit": "jest --config jest-unit-config.json",
+    "test:system": "jest --config jest-system-config.json",
     "lint": "eslint client server front test server.js dbSetup.js",
     "start": "NODE_ENV=development node server.babel.js",
     "start:prod": "NODE_ENV=production node server.babel.js",
@@ -78,7 +80,7 @@
     "identity-obj-proxy": "^3.0.0",
     "image-webpack-loader": "^2.0.0",
     "immutable": "^3.7.6",
-    "jest": "^16.0.1",
+    "jest": "^20.0.4",
     "jsonwebtoken": "^7.1.9",
     "moment": "^2.13.0",
     "node-uuid": "^1.4.7",
@@ -124,6 +126,7 @@
     "xss": "^0.2.10"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "chai": "^4.0.1",
     "chromedriver": "^2.29.0",
     "coveralls": "^2.11.15",
