@@ -1,6 +1,0 @@
-{
-  "buildDirectory": "dist",
-  "express": {
-    "port": 3005
-  }
-}

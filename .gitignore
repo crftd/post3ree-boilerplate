@@ -1,8 +1,0 @@
-/node_modules
-/.idea
-/rethinkdb_data
-npm-debug.log
-/coverage/
-/reports/
-*.log
-/dist/
